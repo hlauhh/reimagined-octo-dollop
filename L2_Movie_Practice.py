@@ -37,15 +37,16 @@ print(df.describe())
 # 1. find the average gross per country
 # print(df.head())
 # df['gross'] = np.where(condition, action when true, action when false)
-df['gross'] = np.where(df['gross'].isnull() == True, df['gross'].mean(), df['gross'])
+# df['gross'] = np.where(df['gross'].isnull() == True, df['gross'].mean(), df['gross'])
 # df['gross'] = np.where(df['gross'].isnull() == True, df[df.country == 'USA']['gross'].mean(), df['gross'])
-print(df[df['gross'].isnull() == True])
+# print(df['gross'])
+# print(df[df['gross'].isnull() == True])
 
 # 2. remove rows from analysis with missing budget
 # stick | means Or, & means And
-df2 = df[(df['budget'] > 100)].reset_index(drop=True)
+#df2 = df[(df['budget'] > 100)].reset_index(drop=True)
 # print(df2.shape)
-print(df2)
+# print(df2)
 
 # 3. standardise country names
 print(df['country'].unique())
@@ -84,3 +85,11 @@ df['Actor_2'] = df_actor[1]
 df['Actor_3'] = df_actor[2]
 
 print(df.head())
+
+df_avg_mean = df.groupby('country')['gross'].mean()
+# df['gross'].fillna(0,inplace=True)
+# df['gross'] = df['gross'].fillna(df['country'].map(df_avg_mean))
+# Apply the mean of each country to the missing 'gross' values
+df['gross'] = df.apply(lambda row: df_avg_mean[row['country']] if np.isnan(row['gross']) else row['gross'], axis=1)
+df =  df[~df['gross'].isnull()]
+print(df.groupby('country')['gross'].mean())
