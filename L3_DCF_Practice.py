@@ -15,6 +15,10 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 import plotly.express as px
 import plotly.graph_objects as go
+import plotly.io as pio
+
+# Set default renderer to browser
+pio.renderers.default = 'browser'
 
 # datetime logic
 import datetime
@@ -34,7 +38,7 @@ start_date = '2015-08-01'
 end_date = '2024-08-31'
 
 # yfinance
-df = yf.download(crypto_arr, start=start_date, end=end_date)
+# df = yf.download(crypto_arr, start=start_date, end=end_date)
 df1 = yf.download(crypto_arr + index_arr, start=start_date, end=end_date, group_by='ticker')
 # print(df.head())
 
@@ -89,12 +93,12 @@ def plot_movement(df_data, title_name):
     return fig_movement
 
 # Plot graphs
-graph_1 = plot_movement(df_closePrice.copy(), 'Price Movement')
-graph_2 = plot_movement(df_volume.copy(), 'Volume')
+# graph_1 = plot_movement(df_closePrice.copy(), 'Price Movement')
+# graph_2 = plot_movement(df_volume.copy(), 'Volume')
 
 # Display both graphs
-graph_1.show()
-graph_2.show()
+# graph_1.show()
+# graph_2.show()
 
 # X_std = (X-X.min(axis=0)) / (X.max(axis=0) - X.min(axis=0))
 # X_scaled = X_std * (max - min) + min
@@ -103,3 +107,22 @@ min_max_scaler = preprocessing.MinMaxScaler(feature_range=(0, 100))
 scaled = min_max_scaler.fit_transform(df_closePrice)
 df_closePrice_scaled = pd.DataFrame(scaled, columns=df_closePrice.columns)
 
+# print(df_closePrice_scaled.head())
+
+graph_3 = plot_movement(df_closePrice_scaled, 'Scale Price Movement')
+graph_3.show()
+
+
+# Price_t / Price_t-1 -1
+# df_shifting_1 = df_closePrice.shift(1)
+df_return = df_closePrice / df_closePrice.shift(1) -1
+print(df_return.head())
+
+graph_4 = plot_movement(df_return, "Return Movement")
+graph_4.show()
+
+df_return_7D = df_closePrice.pct_change(periods=7)
+print(df_return_7D.head())
+
+graph_5 = plot_movement(df_return_7D, "7 Days Return Movement") # build-in function, % change in past 7 days
+graph_5.show()
