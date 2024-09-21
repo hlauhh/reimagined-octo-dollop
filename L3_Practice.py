@@ -21,9 +21,10 @@ hos_json = json.loads(html_hos.content)
 # html_hos_bs = bs(html_hos.content, 'html.parser')
 # print(html_hos_bs)
 
-# To peel the JSON onion
-# the key is the term before the colon : in JSON
+# To peel the JSON onion and get to the data
+print(hos_json[0]['district'][0]['location'][0]['location'][0])
 # if result is a list, you need to specific the location of list, use [0] to get the first item in list
+# the key is the term before the colon : in JSON
 print(hos_json[0]['district'][0]['location'][0]['location'][0].keys())
 # print(hos_json[0]['district'][0].keys()) # get keys from dictionary
 
