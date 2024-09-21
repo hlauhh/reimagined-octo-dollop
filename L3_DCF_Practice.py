@@ -5,6 +5,8 @@ import yfinance as yf
 import pandas as pd
 import numpy as np
 import math
+
+from numpy import number
 from scipy.stats import norm
 from sklearn import preprocessing
 
@@ -17,8 +19,9 @@ import plotly.graph_objects as go
 # datetime logic
 import datetime
 
-# Show all columns
+# Show all columns and display 2 d.p.
 pd.set_option('display.max_columns', None)
+pd.set_option('display.float_format', '{:.2f}'.format)
 
 # static info
 crypto_arr = ['BTC-USD','ETH-USD','XRP-USD']
