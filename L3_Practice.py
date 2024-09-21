@@ -3,7 +3,6 @@
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
-import selenium
 import requests as r
 from bs4 import BeautifulSoup as bs
 import json
