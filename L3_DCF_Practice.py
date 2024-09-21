@@ -124,5 +124,6 @@ graph_4.show()
 df_return_7D = df_closePrice.pct_change(periods=7)
 print(df_return_7D.head())
 
-graph_5 = plot_movement(df_return_7D, "7 Days Return Movement") # build-in function, % change in past 7 days
+# build-in function, % change in past 7 days
+graph_5 = plot_movement(df_return_7D, "7 Days Return Movement")
 graph_5.show()
