@@ -127,3 +127,14 @@ print(df_return_7D.head())
 # build-in function, % change in past 7 days
 graph_5 = plot_movement(df_return_7D, "7 Days Return Movement")
 graph_5.show()
+
+# L4 static plotting
+plt.plot(df_closePrice.index, df_closePrice_scaled.values)
+plt.show()
+
+# Check correlation for pair trading
+# print(df_closePrice.head())
+df_log_rtn = np.log(df_closePrice.pct_change(periods=1).dropna())
+df_log_rtn_corr = df_log_rtn.corr().style.background_gradient(cmap='RdYlBu').set_caption('Correlation Matrix')
+
+print(df_log_rtn_corr)
