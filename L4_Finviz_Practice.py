@@ -98,10 +98,16 @@ print(table_news.head(10))
 print(table_news['Date'][0])
 
 # NLTK
-# instantiate analyzer
-vader = SentimentIntensityAnalyzer
-text_results = vader.polarity_scores('where will rivian be in 5 years')
+# Initialize the SentimentIntensityAnalyzer
+analyzer = SentimentIntensityAnalyzer()
+
+text_results = analyzer.polarity_scores('where will rivian be in 5 years')
 # compound is the weighted average between -1 to +1
 
 print(text_results)
-sentiment_output = table_news['Headline'].apply(vader.polarity_scores).tolist()
+sentiment_output = table_news['Headline'].apply(analyzer.polarity_scores).tolist()
+
+sentiment_df = pd.DataFrame(sentiment_output)
+table_news1 = table_news.join(sentiment_df[['compound']])
+
+print(sentiment_df.head(),table_news1.head())
