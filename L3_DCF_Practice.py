@@ -177,11 +177,12 @@ for c in df_rtn.columns:
     # Max Drawdown
     for window in [5,30]:
         # rolling Max to get to calculate MMD using the closing Price
+        # find the peak value across each window interval
         roll_max = df_closePrice[c].rolling(window, min_periods=1).max()
-
-        daily_drawdown = df_closePrice[c] / roll_max - 1
-
-        max_daily_drawdown = daily_drawdown.min()
+        # find the pct diff (draw-down) each day
+        daily_interval_drawdown = df_closePrice[c] / roll_max - 1
+        # find the absolute min. inside the daily_interval_drawdown for maximum daily draw-down
+        max_daily_drawdown = daily_interval_drawdown.min()
         col1 = 'MMD_' + str(window) + 'D'
         df_indicators.loc[c,col1] = max_daily_drawdown
 
