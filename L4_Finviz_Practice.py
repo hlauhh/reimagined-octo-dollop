@@ -101,13 +101,44 @@ print(table_news['Date'][0])
 # Initialize the SentimentIntensityAnalyzer
 analyzer = SentimentIntensityAnalyzer()
 
-text_results = analyzer.polarity_scores('where will rivian be in 5 years')
+# text_results = analyzer.polarity_scores('where will rivian be in 5 years')
 # compound is the weighted average between -1 to +1
+# print(text_results)
 
-print(text_results)
 sentiment_output = table_news['Headline'].apply(analyzer.polarity_scores).tolist()
-
 sentiment_df = pd.DataFrame(sentiment_output)
 table_news1 = table_news.join(sentiment_df[['compound']])
 
-print(sentiment_df.head(),table_news1.head())
+# print(sentiment_df.head(),table_news1.head())
+# table_news1.groupby(['Ticker','Date']).mean().unstack().index
+# print(table_news1.groupby(['Ticker','Date']).mean().unstack().column)
+
+# table_news2 = table_news1.groupby(['Ticker','Date']).mean(numeric_only=True).unstack().xs("compound",axis='columns').transpose()
+
+# Step 1: Group by 'Ticker' and 'Date'
+grouped = table_news1.groupby(['Ticker', 'Date'])
+
+# Step 2: Calculate the mean of numeric columns within each group
+mean_grouped = grouped.mean(numeric_only=True)
+
+# Step 3: Unstack the 'Date' level of the index to columns
+unstacked = mean_grouped.unstack()
+
+# Step 4: Extract the 'compound' column
+compound_column = unstacked.xs('compound', axis=1)
+
+# Step 5: Transpose the DataFrame
+table_news2 = compound_column.transpose()
+
+# Print the table
+print(table_news2)
+
+# Set the figure size for the plot
+import matplotlib.pyplot as plt
+plt.rcParams['figure.figsize'] = (20, 6)
+
+# Plot the data in a bar chart
+table_news2.plot(kind='bar')
+
+# Display the plot
+plt.show()
