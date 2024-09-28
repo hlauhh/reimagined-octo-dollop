@@ -73,3 +73,6 @@ time.sleep(2)
 # click on enter
 driver.find_element('xpath', path_input).send_keys(Keys.ENTER)
 time.sleep(2)
+
+# Close the Selenium driver
+driver.quit()
