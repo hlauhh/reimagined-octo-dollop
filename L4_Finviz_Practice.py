@@ -31,8 +31,9 @@ from selenium.webdriver.common.keys import Keys
 from webdriver_manager.chrome import ChromeDriverManager  # install the driver
 from selenium.webdriver.chrome.service import Service as ChromeService  # config the driver
 
-import nltk
+pd.set_option('display.max_columns', None)
 
+import nltk
 nltk.downloader.download('vader_lexicon')
 from nltk.sentiment.vader import SentimentIntensityAnalyzer
 
