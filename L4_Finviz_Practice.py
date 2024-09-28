@@ -72,12 +72,12 @@ for name, news_table in news_tables.items():
     for x in news_table.findAll('tr'):
         # headline
         text_content = x.a.get_text()
-        print(text_content)
-        print('--' * 10)
+        # print(text_content)
+        # print('--' * 10)
         # time
         date_content = x.td.text.split()
-        print(date_content)
-        print('--' * 10)
+        # print(date_content)
+        # print('--' * 10)
 
         if len(date_content) == 1:
             time = date_content[0]
@@ -96,3 +96,12 @@ table_news['Date'] = pd.to_datetime(table_news['Date']).dt.date
 print(table_news.head(10))
 
 print(table_news['Date'][0])
+
+# NLTK
+# instantiate analyzer
+vader = SentimentIntensityAnalyzer
+text_results = vader.polarity_scores('where will rivian be in 5 years')
+# compound is the weighted average between -1 to +1
+
+print(text_results)
+sentiment_output = table_news['Headline'].apply(vader.polarity_scores).tolist()
