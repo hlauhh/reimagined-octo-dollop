@@ -135,3 +135,6 @@ df_portf = pd.merge(signals, df_ta['Adj Close'], how='left', left_index=True, ri
 df_return = df_portf[df_portf.position != 0]
 df_return['Notional'] = df_return['position'] * df_return['Adj Close'] * -1
 print(df_return.head())
+
+# TODO
+# Portfolio returns and PnL
