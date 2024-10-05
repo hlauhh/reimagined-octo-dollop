@@ -113,4 +113,4 @@ short_df = pd.DataFrame(short_trades, columns=['short_datetime', 'short_price'])
 result_df = pd.concat([long_df, short_df], axis=1)
 
 # this is doing a calendar spread on +1 or -1 CNH with the average of 120 ticks between July and Spet of CSI500
-
+# data from cffex.com
