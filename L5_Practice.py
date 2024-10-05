@@ -103,7 +103,7 @@ ax1.plot(signals.loc[signals.position==-1].index,
 
 plt.show()
 
-initial_capital= 100e3
+initial_capital= float(100000.0)
 
 positions = pd.DataFrame(index= signals.index)
 positions['PDD'] = 100*signals['signal']
@@ -116,8 +116,9 @@ portfolio['returns'] = portfolio['total'].pct_change()
 
 print(portfolio.head())
 
+'''
 fig = plt.figure()
-ax1 = fig.add_subplot(111, ylabel='Portfolio Value ($)')
+ax1 = fig.add_subplot(111, ylabel='Portfolio Value in ($)')
 df_ta['Adj Close'].plot(ax=ax1, color='r', lw=2.0)
 signals[['short_mavg','long_mavg']].plot(ax=ax1, lw=2.0, figsize=(20,8))
 
@@ -127,3 +128,10 @@ ax1.plot(signals.loc[signals.position==-1].index,
          signals.short_mavg[signals.position==-1],'v', markersize=10, color='g')
 
 plt.show()
+'''
+# df_ta.head(2)
+
+df_portf = pd.merge(signals, df_ta['Adj Close'], how='left', left_index=True, right_index=True)
+df_return = df_portf[df_portf.position != 0]
+df_return['Notional'] = df_return['position'] * df_return['Adj Close'] * -1
+print(df_return.head())
