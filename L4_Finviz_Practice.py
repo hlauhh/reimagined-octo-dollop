@@ -34,6 +34,7 @@ from selenium.webdriver.chrome.service import Service as ChromeService  # config
 pd.set_option('display.max_columns', None)
 
 import nltk
+
 nltk.downloader.download('vader_lexicon')
 from nltk.sentiment.vader import SentimentIntensityAnalyzer
 
@@ -47,7 +48,7 @@ agent_info = {
 
 finviz_url = 'https://finviz.com/quote.ashx?t='
 
-tickers = ['TSLA', 'RIVN']
+tickers = ['TSLA', 'AAPL']
 
 news_tables = {}
 
@@ -135,10 +136,58 @@ print(table_news2)
 
 # Set the figure size for the plot
 import matplotlib.pyplot as plt
+
 plt.rcParams['figure.figsize'] = (20, 6)
 
 # Plot the data in a bar chart
 table_news2.plot(kind='bar')
 
 # Display the plot
+plt.show()
+
+# L5 starts here
+# install tensorflow, pytorch, tf-keras and so install hugging-face's transformers
+
+# Use a pipeline as a high-level helper
+from transformers import pipeline
+
+pipe = pipeline("text-classification", model="mrm8488/distilroberta-finetuned-financial-news-sentiment-analysis")
+
+var = pipe('tesla is an EV name')[0]
+
+sent_df = pd.DataFrame(table_news['Headline'].apply(pipe).tolist())
+
+print(sent_df.head())
+
+x = {'label': 'neutral', 'score': 0.999}
+# print(x['score'])
+
+def process_score(x):
+    global score
+    if x['label'] == 'neutral':score = 0
+    elif x['label'] == 'positive':score = x['score']
+    elif x['label'] == 'negative':score = -1 * x['score']
+    return score
+
+# test = {'label':'abcd','score':0.999)
+# process_score(test)
+
+sent_series = sent_df[0].apply(process_score)
+print(sent_series.head(10))
+
+table_news_1 = table_news.join(sent_series)
+print(table_news_1.head(10))
+
+table_news_2 = table_news_1.groupby(['Ticker', 'Date']).mean(numeric_only=True).unstack().xs(0,axis='columns').transpose()
+print(table_news_2)
+
+apple_price = yf.download('AAPL', start = '2024-09-30', end = '2024-10-05')
+print(apple_price['Adj Close'])
+
+fig, ax1 = plt.subplots(figsize=(20, 10))
+l1, = ax1.plot(apple_price.index, apple_price['Adj Close'],label='Apple Adj Close', color = 'red')
+
+ax2 = ax1.twinx()
+ax2.bar(table_news_2.index, table_news_2['AAPL'], color='grey')
+
 plt.show()
