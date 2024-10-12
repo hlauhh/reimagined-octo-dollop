@@ -1,7 +1,7 @@
 import pandas as pd
 import os
 from pathlib import Path
-from datatime import time
+from datetime import time
 import matplotlib.pyplot as plt
 import plotly.graph_objects as go
 
