@@ -98,7 +98,7 @@ parso==0.8.4
 pathspec==0.12.1
 patsy==0.5.6
 peewee==3.17.6
-pillow==10.4.0
+pillow==12.3.0
 platformdirs==4.3.3
 plotly==5.24.1
 plotly-express==0.4.1
